@@ -3,8 +3,15 @@
 from bs4 import BeautifulSoup
 import httpx
 import requests
+from datetime import datetime as dt, timedelta
+
+
+# Create class that initialises async session
+# Add method to check different markets if stock doesn't exist on NASDAQ/NYSE/Etc?
 
 # playground file to get used to using bs4 for scraping Google Finance
+
+
 async def scrape_stock_page_async(ticker):
 
     """
@@ -14,19 +21,24 @@ async def scrape_stock_page_async(ticker):
     """
 
     # TODO - Error handling!
-
-    # async with httpx.AsyncClient() as client:
-    #     response = await client.get(f"https://www.google.com/finance/quote/{ticker}:NASDAQ?hl=en")
+    # TODO - Make async? (Does it need to be??)
+    # Could be a bottleneck if multiple users request stock data simultaneously (unlikely)
         
-    webpage_html = requests.get(f"https://www.google.com/finance/quote/{ticker}:NASDAQ?hl=en").text
+    response = requests.get(f"https://www.google.com/finance/quote/{ticker}:NASDAQ?hl=en")
+    webpage_html = response.text
+    date_fetched = response.headers['Date']
+
+    # Parse date
+    date = dt.now()
+    expires = (date + timedelta(hours=1)).strftime("%Y-%m-%d %H:%M:%S")
+
     soup = BeautifulSoup(webpage_html, 'html.parser')
 
     # Find ticker statistics
     stock_data = {}
     stock_data[ticker] = {}
+    stock_data[ticker]['fetched_at'] = {'date': date.strftime("%Y-%m-%d %H:%M:%S"), 'expires': expires}
     
-    print("CHECK")
-
     income_stmnt = soup.find_all('table')[0].get_text('|').split('|')
     balance_sht = soup.find_all('table')[1].get_text('|').split('|')
     cash_flow = soup.find_all('table')[2].get_text('|').split('|')
