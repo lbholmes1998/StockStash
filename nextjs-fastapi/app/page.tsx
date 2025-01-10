@@ -7,6 +7,7 @@ import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuIt
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
 import StockInfo from "./components/StockInfo";
+import StockSearch from "./components/StockSearch";
 
 export default function Home() {
 
@@ -172,7 +173,7 @@ export default function Home() {
         </header>
         <main>
           <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-            <StockInfo />
+            <StockSearch />
             </div>
         </main>
       </div>

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import fetchStockData from '../lib/fetchStockData'
+import fetchStockData from '../api/fetchStockData'
 // Basic component to display stock information
 
 
