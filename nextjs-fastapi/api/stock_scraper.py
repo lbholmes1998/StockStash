@@ -52,45 +52,45 @@ async def scrape_stock_page_async(ticker):
     rev_idx = income_stmnt.index('Revenue')
     rev_data = {}
     rev_data['value'] = income_stmnt[rev_idx+2]
-    rev_data['y/y change'] = income_stmnt[rev_idx+3]
-    stock_data[ticker]['Revenue'] = rev_data
+    rev_data['y/y_change'] = income_stmnt[rev_idx+3]
+    stock_data[ticker]['revenue'] = rev_data
 
     net_inc_idx = income_stmnt.index('Net income')
     net_inc_data = {}
     net_inc_data['value'] = income_stmnt[net_inc_idx+2]
-    net_inc_data['y/y change'] = income_stmnt[net_inc_idx+3]
-    stock_data[ticker]['Net Income'] = rev_data
+    net_inc_data['y/y_change'] = income_stmnt[net_inc_idx+3]
+    stock_data[ticker]['net_income'] = rev_data
 
     eps_idx = income_stmnt.index("Earnings per share")
     eps_data = {}
     eps_data['value'] = income_stmnt[eps_idx+2]
-    eps_data['y/y change'] = income_stmnt[eps_idx+3]
-    stock_data[ticker]['EPS'] = eps_data
+    eps_data['y/y_change'] = income_stmnt[eps_idx+3]
+    stock_data[ticker]['eps'] = eps_data
 
     # Balance sheet data
     total_assets_idx = balance_sht.index("Total assets")
     total_assets_data = {}
     total_assets_data['value'] = balance_sht[total_assets_idx+2]
-    total_assets_data['y/y change'] = balance_sht[total_assets_idx+3]
-    stock_data[ticker]['Total Assets'] = total_assets_data
+    total_assets_data['y/y_change'] = balance_sht[total_assets_idx+3]
+    stock_data[ticker]['total_assets'] = total_assets_data
 
     total_lia_idx = balance_sht.index("Total liabilities")
     total_lia_data = {}
     total_lia_data['value'] = balance_sht[total_lia_idx+2]
-    total_lia_data['y/y change'] = balance_sht[total_lia_idx+3]
-    stock_data[ticker]['Total Liabilities'] = total_lia_data
+    total_lia_data['y/y_change'] = balance_sht[total_lia_idx+3]
+    stock_data[ticker]['total_liabilities'] = total_lia_data
 
     # Cash flow data
     op_cash_idx = cash_flow.index("Cash from operations")
     op_cash_data = {}
     op_cash_data['value'] = cash_flow[op_cash_idx+2]
-    op_cash_data['y/y change'] = cash_flow[op_cash_idx+3]
-    stock_data[ticker]['Cash from Operations'] = op_cash_data
+    op_cash_data['y/y_change'] = cash_flow[op_cash_idx+3]
+    stock_data[ticker]['cash_from_operations'] = op_cash_data
 
     finance_cash_idx = cash_flow.index("Cash from financing")
     finance_cash_data = {}
     finance_cash_data['value'] = cash_flow[finance_cash_idx+2]
-    finance_cash_data['y/y change'] = cash_flow[finance_cash_idx+3]
-    stock_data[ticker]['Cash from Financing'] = finance_cash_data
+    finance_cash_data['y/y_change'] = cash_flow[finance_cash_idx+3]
+    stock_data[ticker]['cash_from_financing'] = finance_cash_data
 
     return stock_data

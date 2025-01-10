@@ -15,6 +15,11 @@ async def fetch_stock_data(ticker: str):
     """
         Fetch stock data. Use cache if available else scrape in background.
     """
+
+    # TODO - Convert ticker str to upper case before calling scrape function
+
+    print(f"Request data for: {ticker}")
+
     # cached_data = get_cache(ticker)
     cached_data = cache.get(ticker)
     if cached_data:
