@@ -17,11 +17,9 @@ class StockStashCache:
         """Retrieve item from cache"""
         item = self.cache.get(key)
         if item:
-            date_now = dt.now().replace(microsecond=0)
-            print(date_now)
-            # date_now = dt.strptime(str(date_now), "%Y-%m-%d %H:%M:%S")
-            
+            date_now = dt.now().replace(microsecond=0)            
             expires = dt.strptime(item[key]['fetched_at']['expires'], "%Y-%m-%d %H:%M:%S")
+            
             # Compare dates to see if data has exprired
             if date_now < expires:
                 print("Valid")
