@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .stock_scraper import scrape_stock_page_async
+from .stock_scraper import scrape_stock_page
 from .cache import StockStashCache
 
 ### Create FastAPI instance with custom docs and openapi url
@@ -16,18 +16,17 @@ async def fetch_stock_data(ticker: str):
         Fetch stock data. Use cache if available else scrape in background.
     """
 
-    # TODO - Convert ticker str to upper case before calling scrape function
-
+    ticker = ticker.upper()
     print(f"Request data for: {ticker}")
 
-    # cached_data = get_cache(ticker)
+    
     cached_data = cache.get(ticker)
     if cached_data:
         return {"data": cached_data, "from_cache": True}
     
     # If data isnt cached, scrape the page, cache it, and return data
     print("Requesting new data from Google Finance")
-    stock_data = await scrape_stock_page_async(ticker)
+    stock_data = await scrape_stock_page(ticker)
 
     cache.set(ticker, stock_data)
 
