@@ -21,7 +21,7 @@ class StockStashCache:
             print(date_now)
             # date_now = dt.strptime(str(date_now), "%Y-%m-%d %H:%M:%S")
             
-            expires = dt.strptime(item['data'][key]['fetched_at']['expires'], "%Y-%m-%d %H:%M:%S")
+            expires = dt.strptime(item[key]['fetched_at']['expires'], "%Y-%m-%d %H:%M:%S")
             # Compare dates to see if data has exprired
             if date_now < expires:
                 print("Valid")
@@ -34,9 +34,7 @@ class StockStashCache:
         return None
     
     def set(self, key: str, data: Any):
-        self.cache[key] = {
-            "data": data
-        }
+        self.cache[key] = data
 
     def delete(self, key: str) -> None:
         """ Deletes an item from the cache """
