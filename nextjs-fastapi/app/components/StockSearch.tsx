@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useState, FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
+import StockInfo from './StockInfo';
+
 import fetchStockData from '../api/fetchStockData';
 
 export default function StockSearch() {
@@ -35,10 +36,7 @@ export default function StockSearch() {
                 />
             </form>
             {stockData && (
-                <div>
-                    <h2>Stock Data for {query.toUpperCase()}</h2>
-                    <pre>{JSON.stringify(stockData, null, 2)}</pre>
-                </div>
+                <StockInfo stockData={stockData}/>
             )}
         </>
     );
