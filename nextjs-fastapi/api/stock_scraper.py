@@ -12,7 +12,7 @@ from datetime import datetime as dt, timedelta
 # playground file to get used to using bs4 for scraping Google Finance
 
 
-async def scrape_stock_page_async(ticker):
+async def scrape_stock_page(ticker):
 
     """
         Scrape a Google finance page for a given stock
@@ -92,5 +92,7 @@ async def scrape_stock_page_async(ticker):
     finance_cash_data['value'] = cash_flow[finance_cash_idx+2]
     finance_cash_data['y/y_change'] = cash_flow[finance_cash_idx+3]
     stock_data[ticker]['cash_from_financing'] = finance_cash_data
+
+    # TODO - improve structure of data
 
     return stock_data
