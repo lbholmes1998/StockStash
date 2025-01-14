@@ -1,26 +1,22 @@
 'use client'
 
 import React, { useState, FormEvent } from 'react';
-import StockInfo from './StockInfo';
-
-import fetchStockData from '../api/fetchStockData';
+import { useRouter } from 'next/navigation'
 
 export default function StockSearch() {
 
     const [query, setQuery] = useState('');
-    const [stockData, setStockData] = useState(null)
+
+    const router = useRouter()
 
     const handleSubmit = async (e: FormEvent<HTMLElement>) => {
         
         e.preventDefault();
-        try {
-            const data = await fetchStockData(query)
-            setStockData(data)
-            setQuery('')
-        } catch (error) {
-            console.error(error)
-        }
-        
+
+        // Route to /tickerInfo/[ticker]
+        router.push(`/tickerInfo/${query}`)
+        setQuery('')
+
     }
 
     return (
@@ -30,14 +26,11 @@ export default function StockSearch() {
                 <input
                     className="bg-white p-2 w-[260px] sm:w-80 text-xl rounded-xl text-black m-auto"
                     type="text"
-                    placeholder="Enter a stock ticker ..."
+                    placeholder="Enter a Ticker..."
                     value={query}
-                    onChange={(e) => setQuery(e.target.value)}
+                    onChange={(e) => setQuery(e.target.value.toUpperCase())}
                 />
             </form>
-            {stockData && (
-                <StockInfo stockData={stockData}/>
-            )}
         </>
     );
 }
