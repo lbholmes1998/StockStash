@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import StockSearch from "./components/StockSearch";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,9 +31,7 @@ export default function RootLayout({
   ]
 
   const userNavigation = [
-    { name: 'Your Profile', href: '#' },
-    { name: 'Settings', href: '#' },
-    { name: 'Sign out', href: '#' },
+    { name: 'Sign In', href: '/login' },
   ]
 
   function classNames(...classes: any) {
@@ -99,12 +98,12 @@ export default function RootLayout({
                     >
                       {userNavigation.map((item) => (
                         <MenuItem key={item.name}>
-                          <a
+                          <Link
                             href={item.href}
                             className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
                           >
                             {item.name}
-                          </a>
+                          </Link>
                         </MenuItem>
                       ))}
                     </MenuItems>
@@ -170,7 +169,6 @@ export default function RootLayout({
             </header>
             <main>
               <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-                <StockSearch />
                 {children}
               </div>
             </main>
