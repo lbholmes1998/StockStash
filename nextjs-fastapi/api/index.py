@@ -19,7 +19,6 @@ async def fetch_stock_data(ticker: str):
     ticker = ticker.upper()
     print(f"Request data for: {ticker}")
 
-    
     cached_data = cache.get(ticker)
     if cached_data:
         return cached_data
