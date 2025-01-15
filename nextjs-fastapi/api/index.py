@@ -22,7 +22,7 @@ async def fetch_stock_data(ticker: str):
     
     cached_data = cache.get(ticker)
     if cached_data:
-        return {"data": cached_data, "from_cache": True}
+        return cached_data
     
     # If data isnt cached, scrape the page, cache it, and return data
     print("Requesting new data from Google Finance")
@@ -30,4 +30,4 @@ async def fetch_stock_data(ticker: str):
 
     cache.set(ticker, stock_data)
 
-    return {"data": stock_data, "from_cache": False}
+    return stock_data
