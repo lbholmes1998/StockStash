@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 from bs4 import BeautifulSoup
-import httpx
 import requests
 from datetime import datetime as dt, timedelta
 
