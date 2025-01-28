@@ -1,10 +1,10 @@
-import Login from "../components/Login"
+import LoginForm from "../ui/LoginForm"
 
 
 export default function LoginPage() {
     return (
         <>
-            <Login />
+            <LoginForm />
         </>
     )
 }
