@@ -1,4 +1,12 @@
-import type { NextAuthConfig } from "next-auth";
+import type { NextAuthConfig, DefaultSession } from "next-auth";
+
+declare module "next-auth" {
+    interface Session {
+        user: {
+            id: string,
+        } & DefaultSession["user"]
+    }
+}
 
 export const authConfig = {
     pages: {
@@ -11,13 +19,23 @@ export const authConfig = {
             const isOnUserPage = nextUrl.pathname.startsWith('/user')
 
             if (isOnUserPage) {
-                if (isLoggedIn) return true
+                if (isLoggedIn) {
+                    return true
+                }
                 return false // redirect unauthenticated users to login page
-            } else if (isLoggedIn) {
-                return Response.redirect(new URL('/user', nextUrl))
-            }
+            } 
 
             return true
+        },
+        jwt({ token, user }) {
+            if (user) {
+                token.id = user.id
+            }
+            return token
+        },
+        session({ session, token}) {
+            session.user.id = token.id
+            return session
         }
     },
     providers: []

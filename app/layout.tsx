@@ -2,23 +2,27 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import StockSearch from "./components/StockSearch";
 import Link from "next/link";
 import { signOut } from "@/auth";
+import { auth } from "@/auth";
+import { UserProfile } from "./ui/users/buttons";
+import StockSearch from "./components/StockSearch";
 
 const inter = Inter({ subsets: ["latin"] });
-
 export const metadata = {
   title: "Stock Stash",
   description: "",
 };
 
-export default function RootLayout({
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
 
+
+  const session = await auth()
 
   const user = {
     name: 'Tom Cook',
@@ -28,11 +32,7 @@ export default function RootLayout({
   }
 
   const navigation = [
-    { name: 'foo', href: '#', current: true },
-  ]
-
-  const userNavigation = [
-    { name: 'Sign In', href: '/login' },
+    { name: 'Home', href: '/', current: true },
   ]
 
   function classNames(...classes: any) {
@@ -74,53 +74,57 @@ export default function RootLayout({
                     ))}
                   </div>
                 </div>
-                <div className="hidden sm:ml-6 sm:flex sm:items-center">
-                  <button
-                    type="button"
-                    className="relative rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                  >
-                    <span className="absolute -inset-1.5" />
-                    <span className="sr-only">View notifications</span>
-                    <BellIcon aria-hidden="true" className="size-6" />
-                  </button>
 
-                  {/* Profile dropdown */}
-                  <Menu as="div" className="relative ml-3">
-                    <div>
-                      <MenuButton className="relative flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                        <span className="absolute -inset-1.5" />
-                        <span className="sr-only">Open user menu</span>
-                        <img alt="" src={user.imageUrl} className="size-8 rounded-full" />
-                      </MenuButton>
-                    </div>
-                    <MenuItems
-                      transition
-                      className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+                <StockSearch />
+
+                {session === null
+                  ? 
+                  <div className="flex">
+                    <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md text-black bg-gray-50 p-3 text-sm font-medium md:flex-none md:justify-start md:p-2 md:px-3">
+                      <Link href={"/login"}>Sign In </Link>
+                    </button>
+                    <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md text-black bg-gray-50 p-3 text-sm font-medium md:flex-none md:justify-start md:p-2 md:px-3">
+                      <Link href={"/signup"}>Sign Up </Link>
+                    </button>
+                  </div>
+                  : <div className="hidden sm:ml-6 sm:flex sm:items-center">
+                    <button
+                      type="button"
+                      className="relative rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                      {userNavigation.map((item) => (
-                        <MenuItem key={item.name}>
-                          <Link
-                            href={item.href}
-                            className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
-                          >
-                            {item.name}
-                          </Link>
-                        </MenuItem>
-                      ))}
-                      <div className="hidden h-auto w-full grow rounded-md bg-gray-50 md:block"></div>
-                      <form
-                        action={async () => {
-                          'use server';
-                          await signOut({ redirectTo: '/' });
-                        }}
+                      <span className="absolute -inset-1.5" />
+                      <span className="sr-only">View notifications</span>
+                      <BellIcon aria-hidden="true" className="size-6" />
+                    </button>
+
+                    <Menu as="div" className="relative ml-3">
+                      <div>
+                        <MenuButton className="relative flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                          <span className="absolute -inset-1.5" />
+                          <span className="sr-only">Open user menu</span>
+                          <img alt="" src={user.imageUrl} className="size-8 rounded-full" />
+                        </MenuButton>
+                      </div>
+                      <MenuItems
+                        transition
+                        className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
                       >
-                        <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
-                          <div className="hidden md:block">Sign Out</div>
-                        </button>
-                      </form>
-                    </MenuItems>
-                  </Menu>
-                </div>
+                        <UserProfile />
+                        <form
+                          action={async () => {
+                            'use server';
+                            await signOut({ redirectTo: '/' });
+                          }}
+                        >
+                          <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md text-black bg-gray-50 p-3 text-sm font-medium md:flex-none md:justify-start md:p-2 md:px-3">
+                            <div className="hidden md:block">Sign Out</div>
+                          </button>
+                        </form>
+                      </MenuItems>
+                    </Menu>
+                  </div>
+                }
+
                 <div className="-mr-2 flex items-center sm:hidden">
                   {/* Mobile menu button */}
                   <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">

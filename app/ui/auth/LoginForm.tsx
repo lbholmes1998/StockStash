@@ -5,14 +5,11 @@ import { useRouter } from 'next/navigation'
 import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
 import { ChevronDownIcon } from '@heroicons/react/16/solid'
 import { useActionState } from 'react';
-import { authenticate } from '../lib/actions';
+import { authenticate } from '../../lib/actions';
 import { useSearchParams } from 'next/navigation';
 
 export default function LoginForm() {
 
-    const searchParams = useSearchParams()
-    const callbackUrl = searchParams.get('callbackUrl') || '/'
-    console.log(callbackUrl)
     const [errorMessage, formAction, isPending] = useActionState(
         authenticate,
         undefined
@@ -62,7 +59,6 @@ export default function LoginForm() {
                                 </div>
                             </div>
                         </div>
-                        <input type="hidden" name="redirectTo" value={callbackUrl} />
                         <button aria-disabled={isPending}>Log In</button>
                         {errorMessage && (
                             <>
