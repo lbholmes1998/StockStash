@@ -1,6 +1,7 @@
 import { saveStock } from "../lib/actions";
 
 export function SaveStock({ ticker }: { ticker: string }) {
+    // TODO - Read into .bind()
     const saveStockByTicker = saveStock.bind(null, ticker)
     return (
         <form action={saveStockByTicker}>
