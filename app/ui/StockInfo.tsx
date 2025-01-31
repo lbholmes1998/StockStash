@@ -1,7 +1,9 @@
 import fetchStockData from '../api/fetchStockData'
+import { Button } from "@headlessui/react";
+import { SaveStock } from './buttons';
 
 // Basic component to display stock information
-export default async function StockInfo(props: {ticker: string}) {
+export default async function StockInfo(props: { ticker: string }) {
 
     const ticker = props.ticker
     const stockData = await fetchStockData(ticker)
@@ -26,6 +28,8 @@ export default async function StockInfo(props: {ticker: string}) {
                 <p>Total Liabilities Y/Y Change: {stockData[ticker].total_liabilities['y/y_change']}</p>
 
                 {/* <pre>{JSON.stringify(stockData, null, 2)}</pre> */}
+
+                <SaveStock ticker={ticker}/>
             </div>
         </>
     )

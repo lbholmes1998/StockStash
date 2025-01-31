@@ -6,7 +6,7 @@ import Link from "next/link";
 import { signOut } from "@/auth";
 import { auth } from "@/auth";
 import { UserProfile } from "./ui/users/buttons";
-import StockSearch from "./components/StockSearch";
+import StockSearch from "@/app/ui/StockSearch";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
