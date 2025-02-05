@@ -14,13 +14,10 @@ export default async function StockInfo(props: { ticker: string }) {
     const data = stockData[ticker]
     delete data['fetched_at']
 
-    console.log(data)
-
-
     return (
 
         <>
-            <Table grid className='bg-gray-300 rounded-lg m-auto max-w-lg'>
+            <Table grid className='bg-gray-300 rounded-lg m-auto'>
                 <TableHead>
                     <TableRow>
                         <TableHeader></TableHeader>
