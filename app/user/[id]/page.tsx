@@ -22,6 +22,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
             </div>
 
             <h2 className="font-bold text-lg">Your Saved Stocks</h2>
+            <p>MAKE THIS A TABLE!</p>
             {savedStocks.map((saved) => (
                 <div key={saved.ticker}>
                     <p>Ticker: {saved.ticker}</p>

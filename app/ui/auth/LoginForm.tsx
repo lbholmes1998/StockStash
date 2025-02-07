@@ -8,6 +8,12 @@ import { useActionState } from 'react';
 import { authenticate } from '../../lib/actions';
 import { useSearchParams } from 'next/navigation';
 
+import { Button } from '../tailwind_ui_kit/button';
+
+import Link from 'next/link';
+
+import SignupForm from './SignupForm';
+
 export default function LoginForm() {
 
     const [errorMessage, formAction, isPending] = useActionState(
@@ -20,7 +26,9 @@ export default function LoginForm() {
             <form action={formAction}>
                 <div className="space-y-12">
                     <div className="border-b border-gray-900/10 pb-12">
-                        <h2 className="text-base/7 font-semibold text-gray-900">Log In</h2>
+                        <h2 className="text-base/7 font-semibold text-gray-900">Sign In</h2>
+                        
+                        <span>Don't have an account? - <Link href="/signup" className="text-blue-500">Sign Up</Link> </span>
                         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                             <div className="sm:col-span-4">
                                 <label htmlFor="username" className="block text-sm/6 font-medium text-gray-900">
@@ -34,6 +42,7 @@ export default function LoginForm() {
                                             type="text"
                                             placeholder="Enter Email"
                                             className="block min-w-0 grow py-1.5 pl-1 pr-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6"
+                                            required
                                         />
                                     </div>
                                 </div>
@@ -54,6 +63,7 @@ export default function LoginForm() {
                                             type="password"
                                             placeholder="Enter your password..."
                                             className="block min-w-0 grow py-1.5 pl-1 pr-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6"
+                                            required
                                         />
                                     </div>
                                 </div>

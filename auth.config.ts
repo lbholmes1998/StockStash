@@ -10,6 +10,7 @@ declare module "next-auth" {
 
 export const authConfig = {
     pages: {
+        // Custom page
         signIn: '/login',
     },
     // Protect routes

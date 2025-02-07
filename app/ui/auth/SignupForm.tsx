@@ -6,19 +6,25 @@ import { useRouter } from 'next/navigation'
 import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
 import { ChevronDownIcon } from '@heroicons/react/16/solid'
 import { useActionState } from 'react';
-import { createUser } from '../../lib/actions';
+import { createUser, State } from '../../lib/actions';
+import Link from 'next/link';
 
 export default function SignupForm() {
 
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
 
+    const initialState: State = { message: null, errors: {} }
+    const [state, formAction] = useActionState(createUser, initialState)
+
     return (
         <>
-            <form action={createUser}>
+            <form action={formAction}>
                 <div className="space-y-12">
                     <div className="border-b border-gray-900/10 pb-12">
                         <h2 className="text-base/7 font-semibold text-gray-900">Sign Up</h2>
+                        <span>Already have an account? - <Link href="/login" className="text-blue-500">Log In</Link> </span>
+                        
                         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                             <div className="sm:col-span-4">
                                 <label htmlFor="username" className="block text-sm/6 font-medium text-gray-900">
@@ -34,6 +40,14 @@ export default function SignupForm() {
                                             required
                                             className="block min-w-0 grow py-1.5 pl-1 pr-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6"
                                         />
+                                    </div>
+                                    <div id="customer-error" aria-live="polite" aria-atomic="true">
+                                        {state.errors?.username &&
+                                            state.errors.username.map((error: string) => (
+                                                <p className='mt-2 text-sm text-red-500' key={error}>
+                                                    {error}
+                                                </p>
+                                            ))}
                                     </div>
                                 </div>
                             </div>
@@ -55,6 +69,14 @@ export default function SignupForm() {
                                             className="block min-w-0 grow py-1.5 pl-1 pr-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6"
                                         />
                                     </div>
+                                    <div id="customer-error" aria-live="polite" aria-atomic="true">
+                                        {state.errors?.email &&
+                                            state.errors.email.map((error: string) => (
+                                                <p className='mt-2 text-sm text-red-500' key={error}>
+                                                    {error}
+                                                </p>
+                                            ))}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -75,6 +97,14 @@ export default function SignupForm() {
                                             className="block min-w-0 grow py-1.5 pl-1 pr-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6"
                                             onChange={(e) => setPassword(e.target.value)}
                                         />
+                                    </div>
+                                    <div id="customer-error" aria-live="polite" aria-atomic="true">
+                                        {state.errors?.password &&
+                                            state.errors.password.map((error: string) => (
+                                                <p className='mt-2 text-sm text-red-500' key={error}>
+                                                    {error}
+                                                </p>
+                                            ))}
                                     </div>
                                 </div>
                             </div>
@@ -99,9 +129,9 @@ export default function SignupForm() {
                         {password != confirmPassword && <p>Passwords must match!</p>}
                         <Button
                             type='submit'
-                            className='flex h-10 items-center rounded-lg bg-blue-500 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 active:bg-blue-600 aria-disabled:cursor-not-allowed aria-disabled:opacity-50' 
+                            className='flex h-10 items-center rounded-lg bg-blue-500 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 active:bg-blue-600 aria-disabled:cursor-not-allowed aria-disabled:opacity-50'
                             disabled={password != confirmPassword}>
-                                Sign Up
+                            Sign Up
                         </Button>
                     </div>
                 </div>

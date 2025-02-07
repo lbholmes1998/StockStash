@@ -9,9 +9,6 @@ import {v4 as uuidv4} from 'uuid'
 import { redirect } from 'next/navigation'
 import { auth } from "@/auth"
 
-export type UserDetailsState = {
-    
-}
 
 const UserSchema = z.object({
     username: z.string(),
@@ -19,13 +16,47 @@ const UserSchema = z.object({
     password: z.string()
 })
 
-const CreateUser = UserSchema
-export async function createUser(formData: FormData) {
-    const {username, email, password} = CreateUser.parse({
+const userFormSchema = z.object({
+    username: z.string()
+    .min(1, "Username is required")
+    .min(4, "Username must be more than 4 characters"),
+    email: z.string({required_error: "Email is required"})
+    .min(1, "Email is required")
+    .email("Invalid Email"),
+    password: z.string({ required_error: "Password is required" })
+    .min(1, "Password is required")
+    .min(6, "Password must be more than 6 characters")
+    .max(24, "Password must be less than 24 characters")
+})
+
+export type State = {
+    // form action default state, holds error data
+    errors?: {
+        username?: string[]
+        email?: string[]
+        password?: string[]
+    },
+    message?: string | null
+}
+
+const CreateUser = userFormSchema
+
+export async function createUser(prevState: State, formData: FormData) {
+    const validatedFields = CreateUser.safeParse({
         username: formData.get('username'),
         email: formData.get('email'),
         password: formData.get('password')
     })
+
+    if(!validatedFields.success) {
+        return {
+            errors: validatedFields.error.flatten().fieldErrors,
+            message: 'Missing or invalidated fields. Unable to add user.'
+        }
+    }
+    
+    const {username, email, password} = validatedFields.data
+
     // hash password
     const hashedPassword = await bcrypt.hash(password, 10)
     // Generate ID

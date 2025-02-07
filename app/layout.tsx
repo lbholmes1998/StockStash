@@ -3,9 +3,8 @@ import { Inter } from "next/font/google";
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Link from "next/link";
-import { signOut } from "@/auth";
 import { auth } from "@/auth";
-import { UserProfile } from "./ui/users/buttons";
+import { UserProfileButton, UserSignOutButton } from "./ui/users/buttons";
 import StockSearch from "@/app/ui/StockSearch";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -78,48 +77,29 @@ export default async function RootLayout({
                 <StockSearch />
 
                 {session === null
-                  ? 
+                  ?
                   <div className="flex">
                     <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md text-black bg-gray-50 p-3 text-sm font-medium md:flex-none md:justify-start md:p-2 md:px-3">
                       <Link href={"/login"}>Sign In </Link>
                     </button>
-                    <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md text-black bg-gray-50 p-3 text-sm font-medium md:flex-none md:justify-start md:p-2 md:px-3">
-                      <Link href={"/signup"}>Sign Up </Link>
-                    </button>
                   </div>
                   : <div className="hidden sm:ml-6 sm:flex sm:items-center">
-                    <button
-                      type="button"
-                      className="relative rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    >
-                      <span className="absolute -inset-1.5" />
-                      <span className="sr-only">View notifications</span>
-                      <BellIcon aria-hidden="true" className="size-6" />
-                    </button>
-
                     <Menu as="div" className="relative ml-3">
                       <div>
                         <MenuButton className="relative flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                           <span className="absolute -inset-1.5" />
                           <span className="sr-only">Open user menu</span>
-                          <img alt="" src={user.imageUrl} className="size-8 rounded-full" />
+                          <Bars3Icon aria-hidden="true" className="block size-6 group-data-[open]:hidden" />
                         </MenuButton>
                       </div>
                       <MenuItems
                         transition
                         className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
                       >
-                        <UserProfile />
-                        <form
-                          action={async () => {
-                            'use server';
-                            await signOut({ redirectTo: '/' });
-                          }}
-                        >
-                          <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md text-black bg-gray-50 p-3 text-sm font-medium md:flex-none md:justify-start md:p-2 md:px-3">
-                            <div className="hidden md:block">Sign Out</div>
-                          </button>
-                        </form>
+                        <UserProfileButton userSession={session} />
+                        <UserSignOutButton />
+
+
                       </MenuItems>
                     </Menu>
                   </div>
