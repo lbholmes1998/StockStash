@@ -26,7 +26,7 @@ export const { auth, signIn, signOut } = NextAuth({
                     .object({ email: z.string().email(), password: z.string() })
                     .safeParse(credentials)
 
-                if (parsedCredentials.success) {
+                if (parsedCredentials.success === true) {
                     const {email, password} = parsedCredentials.data
 
                     // Verify user exists
@@ -38,7 +38,7 @@ export const { auth, signIn, signOut } = NextAuth({
 
                     // User exists, check passwords match
                     const passwordMatch = await bcrypt.compare(password, user.password)
-                    if (!passwordMatch) return user
+                    if (passwordMatch) return user
                 }
 
                 console.log("Invalid Credentials!")

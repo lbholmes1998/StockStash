@@ -2,10 +2,14 @@ import fetchStockData from '../api/fetchStockData'
 import { SaveStock } from './buttons';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './tailwind_ui_kit/table';
 import { stockTableRows } from '../lib/stockTableHeaders';
+import { fetchUserSavedStocks } from '../lib/data';
+import type { Session } from 'next-auth';
+
 
 // Basic component to display stock information
-export default async function StockInfo(props: { ticker: string }) {
+export default async function StockInfo(props: { ticker: string, userSession: Session }) {
 
+    const session = props.userSession
     const ticker = props.ticker
     const stockData = await fetchStockData(ticker)
 
@@ -13,6 +17,14 @@ export default async function StockInfo(props: { ticker: string }) {
     // TODO - DO NOT LEAVE CODE LIKE THIS
     const data = stockData[ticker]
     delete data['fetched_at']
+
+    // Get list of user saved stocks
+    const savedStocks = await fetchUserSavedStocks(session.user.id)
+    let saved = savedStocks.map((stock) => {
+        return stock.ticker
+    })
+
+    const found = saved.find((stock) => stock === ticker)
 
     return (
 
@@ -43,8 +55,8 @@ export default async function StockInfo(props: { ticker: string }) {
                 </TableBody>
             </Table>
 
-            <SaveStock ticker={ticker} />
-
+            {found ? <p>Stock Saved</p> : <SaveStock ticker={ticker}/>}
+            
         </>
     )
 }

@@ -24,7 +24,7 @@ async function seedSavedStocks() {
         user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
         ticker VARCHAR(255) NOT NULL,
         saved_at TIMESTAMP DEFAULT NOW(),
-        UNIQUE(user_id, id)
+        UNIQUE(user_id, id, ticker)
       );
     `;
 };

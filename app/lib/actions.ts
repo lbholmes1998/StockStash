@@ -77,6 +77,8 @@ export async function createUser(prevState: State, formData: FormData) {
 
 
 export async function saveStock(ticker: string){
+    // TODO - Figure best way to ensure user can only save a stock once.
+    // Simple DB check and disable/enable save button?
     try {
         const session = await auth()
         if (!session?.user) {
@@ -101,7 +103,7 @@ const AuthenticateUser = userFormSchema.omit({username: true})
 // TODO add field validation as above
 
 export async function authenticate(
-    prevState: string | undefined,
+    prevState: State | undefined,
     formData: FormData,
 ) {
     try {
