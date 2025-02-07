@@ -97,6 +97,9 @@ export async function saveStock(ticker: string){
 }
 
 
+const AuthenticateUser = userFormSchema.omit({username: true})
+// TODO add field validation as above
+
 export async function authenticate(
     prevState: string | undefined,
     formData: FormData,
